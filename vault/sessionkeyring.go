@@ -126,8 +126,7 @@ func (sk *SessionKeyring) Has(key SessionMetadata) (bool, error) {
 }
 
 func (sk *SessionKeyring) Get(key SessionMetadata) (val *sts.Credentials, err error) {
-	_, err = sk.RemoveOldSessions()
-	if err != nil {
+	if _, err := sk.RemoveOldSessions(); err != nil {
 		return nil, err
 	}
 
@@ -147,8 +146,7 @@ func (sk *SessionKeyring) Get(key SessionMetadata) (val *sts.Credentials, err er
 }
 
 func (sk *SessionKeyring) Set(key SessionMetadata, val *sts.Credentials) error {
-	_, err := sk.RemoveOldSessions()
-	if err != nil {
+	if _, err := sk.RemoveOldSessions(); err != nil {
 		return err
 	}
 
