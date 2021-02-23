@@ -316,12 +316,14 @@ func execCmd(command string, args []string, env []string) error {
 	go func() {
 		for {
 			sig := <-sigChan
-			cmd.Process.Signal(sig)
+			_ = cmd.Process.Signal(sig)
 		}
 	}()
 
 	if err := cmd.Wait(); err != nil {
-		cmd.Process.Signal(os.Kill)
+		if err := cmd.Process.Signal(os.Kill); err != nil {
+			return err
+		}
 		return fmt.Errorf("Failed to wait for command termination: %v", err)
 	}
 
